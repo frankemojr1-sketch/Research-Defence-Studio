@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Research Defense Studio</title>
+  <meta name="description" content="A polished website layout for researchers to generate a research proposal and defense-ready manuscript based on research level." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Cormorant+Garamond:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #f4f0e8;
+      --paper: rgba(255,255,255,0.62);
+      --paper-strong: rgba(255,255,255,0.82);
+      --ink: #1d1a17;
+      --muted: #61584f;
+      --line: rgba(39, 31, 24, 0.14);
+      --accent: #7a3e1d;
+      --accent-2: #a86d46;
+      --accent-soft: rgba(122, 62, 29, 0.08);
+      --shadow: 0 20px 60px rgba(58, 40, 24, 0.12);
+      --radius-lg: 28px;
+      --radius-md: 18px;
+      --radius-sm: 12px;
+      --max: 1240px;
+      --nav-h: 76px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:"Space Grotesk", sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(circle at 10% 20%, rgba(168,109,70,0.12), transparent 28%),
+        radial-gradient(circle at 90% 15%, rgba(122,62,29,0.09), transparent 24%),
+        linear-gradient(180deg, #f7f3ec 0%, #f1ece2 45%, #eee7db 100%);
+      min-height:100vh;
+      overflow-x:hidden;
+    }
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      opacity:.22;
+      background-image:
+        linear-gradient(rgba(35,25,18,0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(35,25,18,0.03) 1px, transparent 1px);
+      background-size: 28px 28px;
+      mask-image: radial-gradient(circle at center, black 55%, transparent 100%);
+    }
+
+    a{color:inherit;text-decoration:none}
+    button,input,select,textarea{font:inherit}
+    img,svg{display:block;max-width:100%}
+
+    .container{
+      width:min(calc(100% - 2rem), var(--max));
+      margin-inline:auto;
+    }
+
+    .section{
+      padding: clamp(4.5rem, 7vw, 8rem) 0;
+      position:relative;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:.65rem;
+      font-size:.82rem;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      color:var(--accent);
+      font-weight:700;
+    }
+
+    .eyebrow::before{
+      content:"";
+      width:2.6rem;
+      height:1px;
+      background:currentColor;
+      opacity:.7;
+    }
+
+    h1,h2,h3{
+      margin:0;
+      font-family:"Cormorant Garamond", serif;
+      line-height:.95;
+      letter-spacing:-0.03em;
+      font-weight:700;
+    }
+
+    p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.7;
+      font-size:1rem;
+    }
+
+    .reveal{
+      opacity:0;
+      transform:translateY(24px);
+      transition:opacity .8s ease, transform .8s ease;
+    }
+
+    .reveal.visible{
+      opacity:1;
+      transform:translateY(0);
+    }
+
+    .site-header{
+      position:sticky;
+      top:0;
+      z-index:50;
+      backdrop-filter: blur(16px);
+      background:linear-gradient(180deg, rgba(247,243,236,0.88), rgba(247,243,236,0.62));
+      border-bottom:1px solid rgba(29,26,23,0.08);
+    }
+
+    .nav{
+      min-height:var(--nav-h);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:1rem;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:.9rem;
+      font-weight:700;
+      letter-spacing:.02em;
+    }
+
+    .brand-mark{
+      width:42px;
+      height:42px;
+      border-radius:50%;
+      position:relative;
+      background:
+        radial-gradient(circle at 30% 30%, #cf9b77, #8c4f2c 70%, #6a3418 100%);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.45), 0 10px 20px rgba(122,62,29,.18);
+      overflow:hidden;
+    }
+
+    .brand-mark::before,
+    .brand-mark::after{
+      content:"";
+      position:absolute;
+      inset:9px;
+      border:1px solid rgba(255,255,255,.45);
+      border-radius:50%;
+    }
+
+    .brand-mark::after{
+      inset:15px;
+      border-style:dashed;
+      opacity:.7;
+    }
+
+    .nav-links{
+      display:flex;
+      align-items:center;
+      gap:1.4rem;
+      color:#40352e;
+      font-size:.95rem;
+    }
+
+    .nav-links a{
+      position:relative;
+      padding:.25rem 0;
+    }
+
+    .nav-links a::after{
+      content:"";
+      position:absolute;
+      left:0;
+      bottom:-.1rem;
+      width:100%;
+      height:1px;
+      background:var(--accent);
+      transform:scaleX(0);
+      transform-origin:right;
+      transition:transform .35s ease;
+    }
+
+    .nav-links a:hover::after{
+      transform:scaleX(1);
+      transform-origin:left;
+    }
+
+    .nav-actions{
+      display:flex;
+      align-items:center;
+      gap:.8rem;
+    }
+
+    .btn{
+      border:none;
+      cursor:pointer;
+      border-radius:999px;
+      padding:.95rem 1.35rem;
+      transition:transform .22s ease, box-shadow .22s ease, background .22s ease, color .22s ease;
+      display:inline-flex;
+      align-items:center;
+      gap:.7rem;
+      white-space:nowrap;
+    }
+
+    .btn:active{transform:translateY(1px) scale(.99)}
+
+    .btn-primary{
+      background:var(--ink);
+      color:#f8f4ed;
+      box-shadow: 0 12px 24px rgba(29,26,23,0.16);
+    }
+
+    .btn-primary:hover{
+      transform:translateY(-2px);
+      box-shadow: 0 16px 30px rgba(29,26,23,0.2);
+      background:#11100f;
+    }
+
+    .btn-secondary{
+      background:transparent;
+      color:var(--ink);
+      border:1px solid rgba(29,26,23,0.14);
+    }
+
+    .btn-secondary:hover{
+      transform:translateY(-2px);
+      background:rgba(255,255,255,.55);
+      box-shadow:var(--shadow);
+    }
+
+    .menu-toggle{
+      display:none;
+      width:46px;
+      height:46px;
+      border-radius:50%;
+      border:1px solid rgba(29,26,23,0.12);
+      background:rgba(255,255,255,.55);
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+    }
+
+    .menu-toggle span,
+    .menu-toggle span::before,
+    .menu-toggle span::after{
+      display:block;
+      width:18px;
+      height:1.8px;
+      background:var(--ink);
+      position:relative;
+      transition:.3s ease;
+      border-radius:2px;
+    }
+
+    .menu-toggle span::before,
+    .menu-toggle span::after{
+      content:"";
+      position:absolute;
+      left:0;
+    }
+
+    .menu-toggle span::before{top:-6px}
+    .menu-toggle span::after{top:6px}
+
+    .menu-toggle.active span{background:transparent}
+    .menu-toggle.active span::before{top:0; transform:rotate(45deg)}
+    .menu-toggle.active span::after{top:0; transform:rotate(-45deg)}
+
+    .hero{
+      padding: clamp(3rem, 6vw, 6rem) 0 3rem;
+    }
+
+    .hero-grid{
+      display:grid;
+      grid-template-columns: 1.08fr .92fr;
+      gap:2rem;
+      align-items:stretch;
+    }
+
+    .hero-copy{
+      padding: clamp(1rem, 2vw, 2rem) 0;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      gap:1.5rem;
+    }
+
+    .hero-copy h1{
+      font-size: clamp(3.6rem, 8vw, 7.5rem);
+      max-width: 10ch;
+    }
+
+    .hero-copy .lead{
+      max-width: 58ch;
+      font-size: clamp(1rem, 1.4vw, 1.12rem);
+    }
+
+    .hero-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:.9rem;
+      margin-top:.3rem;
+    }
+
+    .meta-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:1.3rem;
+      padding-top:.8rem;
+      color:#4e443c;
+      font-size:.92rem;
+    }
+
+    .meta-row span{
+      display:inline-flex;
+      align-items:center;
+      gap:.5rem;
+    }
+
+    .meta-row i{
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background:var(--accent);
+      display:inline-block;
+    }
+
+    .hero-panel{
+      position:relative;
+      min-height:560px;
+      border-radius: calc(var(--radius-lg) + 8px);
+      overflow:hidden;
+      border:1px solid rgba(29,26,23,0.08);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.6), rgba(255,255,255,.28)),
+        radial-gradient(circle at top left, rgba(168,109,70,.15), transparent 28%),
+        linear-gradient(135deg, #f8f3ec 0%, #efe6d8 100%);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-panel::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(90deg, rgba(122,62,29,.045) 1px, transparent 1px),
+        linear-gradient(rgba(122,62,29,.045) 1px, transparent 1px);
+      background-size: 38px 38px;
+      opacity:.55;
+      mask-image: linear-gradient(180deg, black 60%, transparent 100%);
+    }
+
+    .floating-note{
+      position:absolute;
+      backdrop-filter: blur(12px);
+      background: rgba(255,255,255,.68);
+      border:1px solid rgba(29,26,23,.08);
+      box-shadow: 0 18px 30px rgba(60,42,26,.12);
+      border-radius:22px;
+      padding:1rem 1rem 1.05rem;
+      animation: drift 7s ease-in-out infinite;
+    }
+
+    .floating-note h3{
+      font-family:"Space Grotesk", sans-serif;
+      font-size:1rem;
+      line-height:1.2;
+      margin-bottom:.55rem;
+    }
+
+    .floating-note p{
+      font-size:.9rem;
+      line-height:1.5;
+    }
+
+    .note-1{
+      top:7%;
+      right:6%;
+      width:min(270px, 68%);
+      animation-delay:.4s;
+    }
+
+    .note-2{
+      left:7%;
+      bottom:9%;
+      width:min(300px, 74%);
+      animation-delay:1.2s;
+    }
+
+    .manuscript{
+      position:absolute;
+      left:50%;
+      top:53%;
+      transform:translate(-50%, -50%) rotate(-5deg);
+      width:min(72%, 420px);
+      aspect-ratio: 0.78;
+      border-radius: 18px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.96), rgba(248,244,236,.96));
+      border:1px solid rgba(31,24,19,.08);
+      box-shadow: 0 34px 60px rgba(45,30,17,.16);
+      padding:1.25rem 1.15rem;
+    }
+
+    .manuscript::before{
+      content:"";
+      position:absolute;
+      left:10px;
+      top:12px;
+      bottom:12px;
+      width:4px;
+      border-radius:999px;
+      background:linear-gradient(180deg, #8b4e2b, #c79268);
+      opacity:.9;
+    }
+
+    .doc-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding-left:.65rem;
+      margin-bottom:1rem;
+    }
+
+    .doc-title{
+      font-size:.92rem;
+      font-weight:700;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color:var(--accent);
+    }
+
+    .doc-badge{
+      padding:.4rem .65rem;
+      border-radius:999px;
+      background:var(--accent-soft);
+      color:var(--accent);
+      font-size:.78rem;
+      font-weight:700;
+    }
+
+    .doc-lines{
+      display:grid;
+      gap:.7rem;
+      padding-left:.65rem;
+    }
+
+    .doc-lines span{
+      display:block;
+      height:10px;
+      border-radius:999px;
+      background:linear-gradient(90deg, rgba(43,33,26,.14), rgba(43,33,26,.06));
+    }
+
+    .doc-lines span:nth-child(1){width:84%}
+    .doc-lines span:nth-child(2){width:92%}
+    .doc-lines span:nth-child(3){width:67%}
+    .doc-lines span:nth-child(4){width:88%}
+    .doc-lines span:nth-child(5){width:74%}
+    .doc-lines span:nth-child(6){width:95%}
+    .doc-lines span:nth-child(7){width:58%}
+
+    .seal{
+      position:absolute;
+      right:-16px;
+      bottom:34px;
+      width:92px;
+      height:92px;
+      border-radius:50%;
+      background:
+        radial-gradient(circle at 35% 30%, #d9a880, #8f4c28 72%, #6d3418 100%);
+      display:grid;
+      place-items:center;
+      box-shadow: 0 18px 26px rgba(122,62,29,.24);
+      color:#fff7ef;
+      text-align:center;
+      font-size:.68rem;
+      font-weight:700;
+      line-height:1.1;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      transform:rotate(12deg);
+    }
+
+    .seal::before{
+      content:"";
+      position:absolute;
+      inset:10px;
+      border:1px dashed rgba(255,255,255,.5);
+      border-radius:50%;
+    }
+
+    .section-head{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap:1.5rem;
+      align-items:end;
+      margin-bottom:2.4rem;
+    }
+
+    .section-head h2{
+      font-size: clamp(2.7rem, 5vw, 4.7rem);
+      max-width: 11ch;
+    }
+
+    .section-head p{
+      max-width:46ch;
+      justify-self:end;
+    }
+
+    .process-layout{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:1rem;
+    }
+
+    .process-step{
+      padding:1.35rem 1.25rem 1.4rem;
+      border-top:1px solid rgba(29,26,23,.12);
+      position:relative;
+      min-height:220px;
+      background:linear-gradient(180deg, rgba(255,255,255,.35), rgba(255,255,255,.08));
+    }
+
+    .process-step .index{
+      font-size:.82rem;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      color:var(--accent);
+      font-weight:700;
+      margin-bottom:1rem;
+    }
+
+    .process-step h3{
+      font-size:2rem;
+      margin-bottom:.8rem;
+    }
+
+    .process-step p{
+      max-width:32ch;
+    }
+
+    .showcase{
+      display:grid;
+      grid-template-columns: .95fr 1.05fr;
+      gap:1.2rem;
+      align-items:stretch;
+    }
+
+    .levels-panel,
+    .preview-panel{
+      border:1px solid rgba(29,26,23,.08);
+      border-radius:var(--radius-lg);
+      background:var(--paper);
+      backdrop-filter: blur(14px);
+      box-shadow: var(--shadow);
+    }
+
+    .levels-panel{
+      padding:1.5rem;
+      display:flex;
+      flex-direction:column;
+      gap:1rem;
+    }
+
+    .levels-panel h3,
+    .preview-panel h3{
+      font-family:"Space Grotesk", sans-serif;
+      font-size:1rem;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      color:var(--accent);
+    }
+
+    .level-list{
+      display:grid;
+      gap:.8rem;
+      margin-top:.2rem;
+    }
+
+    .level-btn{
+      width:100%;
+      text-align:left;
+      background:rgba(255,255,255,.45);
+      border:1px solid rgba(29,26,23,.08);
+      padding:1rem;
+      border-radius:18px;
+      display:grid;
+      grid-template-columns: auto 1fr auto;
+      gap:.9rem;
+      align-items:start;
+      cursor:pointer;
+      transition:transform .22s ease, box-shadow .22s ease, border-color .22s ease, background .22s ease;
+    }
+
+    .level-btn:hover{
+      transform:translateY(-2px);
+      box-shadow:0 18px 28px rgba(43,31,22,.1);
+      border-color:rgba(122,62,29,.24);
+    }
+
+    .level-btn.active{
+      background:linear-gradient(180deg, rgba(122,62,29,.08), rgba(255,255,255,.72));
+      border-color:rgba(122,62,29,.28);
+    }
+
+    .level-num{
+      width:2.3rem;
+      height:2.3rem;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      background:var(--ink);
+      color:#fff7ef;
+      font-size:.86rem;
+      font-weight:700;
+      margin-top:.1rem;
+    }
+
+    .level-btn.active .level-num{
+      background:var(--accent);
+    }
+
+    .level-copy strong{
+      display:block;
+      font-size:1rem;
+      color:var(--ink);
+      margin-bottom:.32rem;
+    }
+
+    .level-copy span{
+      display:block;
+      color:var(--muted);
+      line-height:1.5;
+      font-size:.92rem;
+    }
+
+    .level-tag{
+      font-size:.76rem;
+      color:var(--accent);
+      font-weight:700;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      align-self:center;
+    }
+
+    .preview-panel{
+      padding:1.5rem;
+      display:grid;
+      grid-template-rows:auto auto 1fr auto;
+      gap:1rem;
+      min-height: 560px;
+    }
+
+    .preview-top{
+      display:flex;
+      justify-content:space-between;
+      gap:1rem;
+      align-items:start;
+    }
+
+    .preview-title h4{
+      margin:0;
+      font-size: clamp(2rem, 3vw, 3rem);
+      line-height:1;
+      font-family:"Cormorant Garamond", serif;
+    }
+
+    .preview-title p{
+      margin-top:.5rem;
+      max-width:46ch;
+    }
+
+    .status-pill{
+      padding:.5rem .8rem;
+      border-radius:999px;
+      border:1px solid rgba(29,26,23,.1);
+      background:rgba(255,255,255,.55);
+      font-size:.8rem;
+      color:var(--accent);
+      font-weight:700;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+    }
+
+    .spec-strip{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:.7rem;
+    }
+
+    .spec{
+      padding:.85rem .9rem;
+      border-radius:16px;
+      background:rgba(255,255,255,.5);
+      border:1px solid rgba(29,26,23,.07);
+    }
+
+    .spec small{
+      display:block;
+      font-size:.72rem;
+      text-transform:uppercase;
+      letter-spacing:.14em;
+      color:var(--accent);
+      margin-bottom:.35rem;
+      font-weight:700;
+    }
+
+    .spec span{
+      color:var(--ink);
+      font-size:.96rem;
+      font-weight:500;
+    }
+
+    .preview-sheet{
+      position:relative;
+      border-radius:22px;
+      padding:1.2rem;
+      border:1px solid rgba(29,26,23,.08);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.86), rgba(250,246,240,.78));
+      overflow:hidden;
+    }
+
+    .preview-sheet::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(transparent 95%, rgba(29,26,23,.045) 95%),
+        linear-gradient(90deg, transparent 95%, rgba(29,26,23,.035) 95%);
+      background-size: 100% 38px, 38px 100%;
+      opacity:.5;
+      pointer-events:none;
+    }
+
+    .sheet-head{
+      position:relative;
+      z-index:1;
+      display:flex;
+      justify-content:space-between;
+      gap:1rem;
+      align-items:flex-start;
+      margin-bottom:1rem;
+    }
+
+    .sheet-head h5{
+      margin:0;
+      font-size:1.25rem;
+      line-height:1.15;
+    }
+
+    .sheet-sub{
+      color:var(--muted);
+      font-size:.9rem;
+      margin-top:.35rem;
+    }
+
+    .sheet-score{
+      text-align:right;
+      font-size:.8rem;
+      color:var(--accent);
+      font-weight:700;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+    }
+
+    .sheet-body{
+      position:relative;
+      z-index:1;
+      display:grid;
+      gap:1rem;
+    }
+
+    .sheet-block{
+      display:grid;
+      gap:.45rem;
+    }
+
+    .sheet-block strong{
+      font-size:.84rem;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      color:var(--accent);
+    }
+
+    .line-cluster{
+      display:grid;
+      gap:.5rem;
+    }
+
+    .line-cluster span{
+      display:block;
+      height:9px;
+      border-radius:999px;
+      background:linear-gradient(90deg, rgba(29,26,23,.16), rgba(29,26,23,.06));
+    }
+
+    .line-cluster span:nth-child(1){width:100%}
+    .line-cluster span:nth-child(2){width:87%}
+    .line-cluster span:nth-child(3){width:94%}
+    .line-cluster span:nth-child(4){width:71%}
+
+    .preview-actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:.8rem;
+    }
+
+    .framework{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:1rem;
+    }
+
+    .framework-pane{
+      padding:1.5rem;
+      border-top:1px solid rgba(29,26,23,.12);
+      min-height:320px;
+      position:relative;
+    }
+
+    .framework-pane h3{
+      font-size:2.2rem;
+      margin-bottom:.85rem;
+    }
+
+    .framework-pane ul{
+      list-style:none;
+      padding:0;
+      margin:1rem 0 0;
+      display:grid;
+      gap:.8rem;
+    }
+
+    .framework-pane li{
+      display:grid;
+      grid-template-columns:auto 1fr;
+      gap:.75rem;
+      align-items:start;
+      color:var(--muted);
+      line-height:1.6;
+    }
+
+    .framework-pane li::before{
+      content:"✦";
+      color:var(--accent);
+      font-size:.9rem;
+      margin-top:.15rem;
+    }
+
+    .cta-band{
+      border:1px solid rgba(29,26,23,.08);
+      border-radius: calc(var(--radius-lg) + 4px);
+      background:
+        linear-gradient(135deg, rgba(122,62,29,.08), rgba(255,255,255,.72)),
+        var(--paper-strong);
+      backdrop-filter: blur(14px);
+      box-shadow: var(--shadow);
+      padding: clamp(1.5rem, 4vw, 2.5rem);
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap:1rem;
+      align-items:center;
+    }
+
+    .cta-band h2{
+      font-size: clamp(2.6rem, 5vw, 4.6rem);
+      max-width:11ch;
+    }
+
+    .cta-band p{
+      max-width:46ch;
+      margin-top:.8rem;
+    }
+
+    .cta-right{
+      display:flex;
+      flex-direction:column;
+      gap:1rem;
+      align-items:flex-start;
+      justify-self:end;
+    }
+
+    .mini-note{
+      padding:1rem 1.05rem;
+      border-radius:18px;
+      border:1px solid rgba(29,26,23,.08);
+      background:rgba(255,255,255,.55);
+      color:var(--muted);
+      max-width: 28ch;
+    }
+
+    footer{
+      padding:2rem 0 3rem;
+      color:#5f554d;
+      font-size:.92rem;
+    }
+
+    .footer-row{
+      display:flex;
+      justify-content:space-between;
+      gap:1rem;
+      align-items:center;
+      border-top:1px solid rgba(29,26,23,.08);
+      padding-top:1.4rem;
+    }
+
+    .stagger-1{animation:fadeUp .7s ease .08s both}
+    .stagger-2{animation:fadeUp .7s ease .18s both}
+    .stagger-3{animation:fadeUp .7s ease .28s both}
+    .stagger-4{animation:fadeUp .7s ease .38s both}
+    .stagger-5{animation:fadeUp .7s ease .48s both}
+
+    @keyframes fadeUp{
+      from{opacity:0; transform:translateY(24px)}
+      to{opacity:1; transform:translateY(0)}
+    }
+
+    @keyframes drift{
+      0%,100%{transform:translateY(0)}
+      50%{transform:translateY(-10px)}
+    }
+
+    @media (max-width: 1040px){
+      .hero-grid,
+      .showcase,
+      .cta-band,
+      .section-head,
+      .framework{
+        grid-template-columns:1fr;
+      }
+
+      .section-head p,
+      .cta-right{
+        justify-self:start;
+      }
+
+      .hero-panel{
+        min-height:500px;
+      }
+    }
+
+    @media (max-width: 820px){
+      .nav-links,
+      .nav-actions .btn-secondary{
+        display:none;
+      }
+
+      .menu-toggle{
+        display:inline-flex;
+      }
+
+      .nav-actions{
+        gap:.6rem;
+      }
+
+      .nav-panel{
+        position:absolute;
+        left:1rem;
+        right:1rem;
+        top:calc(100% + .6rem);
+        background:rgba(255,255,255,.88);
+        backdrop-filter: blur(16px);
+        border:1px solid rgba(29,26,23,.08);
+        border-radius:20px;
+        box-shadow:var(--shadow);
+        padding:1rem;
+        display:none;
+      }
+
+      .nav-panel.open{
+        display:grid;
+        gap:.9rem;
+      }
+
+      .nav-panel a{
+        padding:.7rem .2rem;
+        border-bottom:1px solid rgba(29,26,23,.06);
+      }
+
+      .nav-panel a:last-child{border-bottom:none}
+
+      .process-layout{
+        grid-template-columns:1fr;
+      }
+
+      .spec-strip{
+        grid-template-columns:1fr;
+      }
+
+      .footer-row{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+    }
+
+    @media (max-width: 640px){
+      .hero-copy h1{
+        font-size: clamp(3rem, 14vw, 4.5rem);
+      }
+
+      .hero-panel{
+        min-height:460px;
+      }
+
+      .manuscript{
+        width:84%;
+      }
+
+      .preview-panel{
+        min-height:auto;
+      }
+
+      .preview-top,
+      .sheet-head{
+        flex-direction:column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav">
+      <a href="#" class="brand" aria-label="Research Defense Studio home">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>Research Defense Studio</span>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary">
+        <a href="#process">How it works</a>
+        <a href="#levels">Research levels</a>
+        <a href="#framework">Defense structure</a>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="btn btn-secondary" type="button">View sample</button>
+        <button class="btn btn-primary" type="button">Generate draft</button>
+        <button class="menu-toggle" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobileMenu">
+          <span></span>
+        </button>
+      </div>
+
+      <div class="nav-panel" id="mobileMenu" aria-label="Mobile navigation">
+        <a href="#process">How it works</a>
+        <a href="#levels">Research levels</a>
+        <a href="#framework">Defense structure</a>
+        <a href="#start">Generate draft</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <span class="eyebrow stagger-1">Proposal to defense-ready manuscript</span>
+          <h1 class="stagger-2">Build a stronger research defense from the very first draft.</h1>
+          <p class="lead stagger-3">
+            This layout is designed for a platform that gives researchers a complete proposal and a manuscript tailored to the level of study they want to pursue—undergraduate, master's, doctoral, or advanced institutional work.
+          </p>
+
+          <div class="hero-actions stagger-4" id="start">
+            <button class="btn btn-primary" type="button">Start with your research level</button>
+            <button class="btn btn-secondary" type="button">Explore manuscript logic</button>
+          </div>
+
+          <div class="meta-row stagger-5" aria-label="Platform highlights">
+            <span><i aria-hidden="true"></i>Level-based manuscript generation</span>
+            <span><i aria-hidden="true"></i>Defense-oriented structure</span>
+            <span><i aria-hidden="true"></i>Proposal + chapter guidance</span>
+          </div>
+        </div>
+
+        <div class="hero-panel reveal">
+          <div class="floating-note note-1">
+            <h3>Proposal logic</h3>
+            <p>Problem statement, objectives, conceptual framing, method design, scope, and expected contribution are shaped around the selected research depth.</p>
+          </div>
+
+          <div class="manuscript" aria-hidden="true">
+            <div class="doc-top">
+              <div class="doc-title">Defense Manuscript</div>
+              <div class="doc-badge">Adaptive</div>
+            </div>
+            <div class="doc-lines">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <div class="seal">Ready for Defense</div>
+          </div>
+
+          <div class="floating-note note-2">
+            <h3>Level-sensitive output</h3>
+            <p>As research expectations increase, the manuscript expands in theoretical rigor, methodology complexity, literature synthesis, and defense preparation depth.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="process">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <span class="eyebrow">How it works</span>
+            <h2>One platform, three academic moves.</h2>
+          </div>
+          <p>
+            The experience is structured like an editorial workflow rather than a generic dashboard: select the level, shape the proposal, and receive a manuscript built for review and oral defense.
+          </p>
+        </div>
+
+        <div class="process-layout">
+          <article class="process-step reveal">
+            <div class="index">Step 01</div>
+            <h3>Choose the level</h3>
+            <p>Select the degree or research intensity. The site adjusts argument depth, chapter scope, citation density, and expected methodological sophistication.</p>
+          </article>
+
+          <article class="process-step reveal">
+            <div class="index">Step 02</div>
+            <h3>Generate the proposal</h3>
+            <p>The proposal draft frames the research problem, objectives, significance, questions, delimitations, and early design logic required for approval.</p>
+          </article>
+
+          <article class="process-step reveal">
+            <div class="index">Step 03</div>
+            <h3>Defend the manuscript</h3>
+            <p>The manuscript aligns with the selected level and prepares the researcher for panel questions through clearer structure, rationale, and contribution claims.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="levels">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <span class="eyebrow">Adaptive manuscript system</span>
+            <h2>The manuscript changes with the research level.</h2>
+          </div>
+          <p>
+            Below is a sample interaction area showing how the generated manuscript can shift in tone, scope, and defense expectations based on the researcher’s chosen level.
+          </p>
+        </div>
+
+        <div class="showcase">
+          <aside class="levels-panel reveal" aria-label="Research level options">
+            <h3>Select research level</h3>
+
+            <div class="level-list">
+              <button class="level-btn active" type="button"
+                data-level="Undergraduate Study"
+                data-tag="Foundational"
+                data-length="25–45 pages"
+                data-method="Moderate complexity"
+                data-defense="Concept clarity"
+                data-summary="Designed for capstone or final-year work with a clearer emphasis on feasibility, topic alignment, and manageable methods."
+                data-title="Undergraduate manuscript framework"
+                data-subtitle="A practical structure centered on clarity, relevance, and defendable execution."
+                data-score="Panel fit: Foundational"
+              >
+                <span class="level-num">01</span>
+                <span class="level-copy">
+                  <strong>Undergraduate</strong>
+                  <span>Capstone, project-based, or introductory empirical work with a concise theoretical and methodological frame.</span>
+                </span>
+                <span class="level-tag">Base</span>
+              </button>
+
+              <button class="level-btn" type="button"
+                data-level="Master's Research"
+                data-tag="Analytical"
+                data-length="50–90 pages"
+                data-method="Advanced mixed methods"
+                data-defense="Argument depth"
+                data-summary="Built for stronger literature synthesis, comparative argumentation, and a more defensible methodological rationale."
+                data-title="Master's manuscript framework"
+                data-subtitle="A deeper analytical document with broader literature engagement and sharper contribution positioning."
+                data-score="Panel fit: Intermediate"
+              >
+                <span class="level-num">02</span>
+                <span class="level-copy">
+                  <strong>Master's</strong>
+                  <span>Expands critical review, research design rigor, and interpretation depth for formal departmental defense.</span>
+                </span>
+                <span class="level-tag">Depth</span>
+              </button>
+
+              <button class="level-btn" type="button"
+                data-level="Doctoral Dissertation"
+                data-tag="Scholarly"
+                data-length="120–250 pages"
+                data-method="High methodological rigor"
+                data-defense="Original contribution"
+                data-summary="Structured for advanced theoretical framing, robust methodology, extensive review, and explicit originality in contribution."
+                data-title="Doctoral manuscript framework"
+                data-subtitle="A full dissertation architecture designed to withstand expert review and sustained defense questioning."
+                data-score="Panel fit: Advanced"
+              >
+                <span class="level-num">03</span>
+                <span class="level-copy">
+                  <strong>Doctoral</strong>
+                  <span>Prioritizes novelty, sophisticated research design, stronger validation logic, and a substantial academic contribution.</span>
+                </span>
+                <span class="level-tag">Rigor</span>
+              </button>
+
+              <button class="level-btn" type="button"
+                data-level="Institutional / Grant Research"
+                data-tag="Strategic"
+                data-length="Variable dossier"
+                data-method="Policy or large-scale design"
+                data-defense="Stakeholder value"
+                data-summary="Useful for funded, institutional, or policy-facing studies where evidence, implementation logic, and strategic impact matter most."
+                data-title="Institutional research manuscript framework"
+                data-subtitle="A strategic writing structure that balances evidence, implementation, significance, and review-board readiness."
+                data-score="Panel fit: Strategic"
+              >
+                <span class="level-num">04</span>
+                <span class="level-copy">
+                  <strong>Institutional / Grant</strong>
+                  <span>Optimized for larger-scale studies, policy contexts, or funded research needing stronger justification and projected impact.</span>
+                </span>
+                <span class="level-tag">Impact</span>
+              </button>
+            </div>
+          </aside>
+
+          <section class="preview-panel reveal" aria-live="polite">
+            <div class="preview-top">
+              <div class="preview-title">
+                <h3>Live manuscript preview</h3>
+                <h4 id="previewLevel">Undergraduate Study</h4>
+                <p id="previewSummary">Designed for capstone or final-year work with a clearer emphasis on feasibility, topic alignment, and manageable methods.</p>
+              </div>
+              <div class="status-pill" id="previewTag">Foundational</div>
+            </div>
+
+            <div class="spec-strip">
+              <div class="spec">
+                <small>Expected length</small>
+                <span id="previewLength">25–45 pages</span>
+              </div>
+              <div class="spec">
+                <small>Method profile</small>
+                <span id="previewMethod">Moderate complexity</span>
+              </div>
+              <div class="spec">
+                <small>Defense emphasis</small>
+                <span id="previewDefense">Concept clarity</span>
+              </div>
+            </div>
+
+            <div class="preview-sheet">
+              <div class="sheet-head">
+                <div>
+                  <h5 id="sheetTitle">Undergraduate manuscript framework</h5>
+                  <div class="sheet-sub" id="sheetSubtitle">A practical structure centered on clarity, relevance, and defendable execution.</div>
+                </div>
+                <div class="sheet-score" id="sheetScore">Panel fit: Foundational</div>
+              </div>
+
+              <div class="sheet-body">
+                <div class="sheet-block">
+                  <strong>Proposal section</strong>
+                  <div class="line-cluster">
+                    <span></span><span></span><span></span><span></span>
+                  </div>
+                </div>
+
+                <div class="sheet-block">
+                  <strong>Literature and framework</strong>
+                  <div class="line-cluster">
+                    <span style="width:92%"></span>
+                    <span style="width:79%"></span>
+                    <span style="width:88%"></span>
+                    <span style="width:66%"></span>
+                  </div>
+                </div>
+
+                <div class="sheet-block">
+                  <strong>Methodology and defense notes</strong>
+                  <div class="line-cluster">
+                    <span style="width:96%"></span>
+                    <span style="width:84%"></span>
+                    <span style="width:90%"></span>
+                    <span style="width:74%"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="preview-actions">
+              <button class="btn btn-primary" type="button">Generate this manuscript</button>
+              <button class="btn btn-secondary" type="button">Compare with another level</button>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="framework">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <span class="eyebrow">Defense structure</span>
+            <h2>Designed for approval, revision, and defense.</h2>
+          </div>
+          <p>
+            The layout emphasizes a serious academic tone: editorial spacing, manuscript-inspired visuals, and a structure that communicates rigor rather than startup-style software gloss.
+          </p>
+        </div>
+
+        <div class="framework">
+          <article class="framework-pane reveal">
+            <h3>Proposal output</h3>
+            <p>
+              The proposal area should guide the researcher from title alignment to significance of the study, ensuring the generated draft feels review-board ready.
+            </p>
+            <ul>
+              <li>Problem statement aligned with level-specific academic expectations.</li>
+              <li>Research questions and objectives calibrated for feasible scope.</li>
+              <li>Conceptual or theoretical framing appropriate to depth of inquiry.</li>
+              <li>Method overview written in a language suitable for panel review.</li>
+            </ul>
+          </article>
+
+          <article class="framework-pane reveal">
+            <h3>Manuscript output</h3>
+            <p>
+              The manuscript should extend the proposal into a defense-oriented document with stronger chapter logic, argument continuity, and preparation for likely examination points.
+            </p>
+            <ul>
+              <li>Literature review scaled from introductory synthesis to advanced scholarly positioning.</li>
+              <li>Methods section expanded according to research rigor and validation needs.</li>
+              <li>Findings, discussion, and implications structured for oral defense clarity.</li>
+              <li>Potential defense questions and justification prompts embedded in the workflow.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="cta-band reveal">
+          <div>
+            <span class="eyebrow">Ready to launch</span>
+            <h2>Give researchers the right manuscript for the right level.</h2>
+            <p>
+              This layout can serve as the front-facing experience for a research writing platform, a university support tool, or a manuscript generator tailored to proposal defense and final defense preparation.
+            </p>
+          </div>
+
+          <div class="cta-right">
+            <button class="btn btn-primary" type="button">Create your research draft</button>
+            <div class="mini-note">
+              Best used with a guided intake form: discipline, level, methodology preference, and intended research problem.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-row">
+      <div>Research Defense Studio — academic writing layout concept</div>
+      <div>Proposal generation · Manuscript adaptation · Defense readiness</div>
+    </div>
+  </footer>
+
+  <script>
+    const menuToggle = document.querySelector('.menu-toggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    if (menuToggle && mobileMenu) {
+      menuToggle.addEventListener('click', () => {
+        const open = mobileMenu.classList.toggle('open');
+        menuToggle.classList.toggle('active', open);
+        menuToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+
+      mobileMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          mobileMenu.classList.remove('open');
+          menuToggle.classList.remove('active');
+          menuToggle.setAttribute('aria-expanded', 'false');
+        });
+      });
+    }
+
+    const levelButtons = document.querySelectorAll('.level-btn');
+    const previewLevel = document.getElementById('previewLevel');
+    const previewSummary = document.getElementById('previewSummary');
+    const previewTag = document.getElementById('previewTag');
+    const previewLength = document.getElementById('previewLength');
+    const previewMethod = document.getElementById('previewMethod');
+    const previewDefense = document.getElementById('previewDefense');
+    const sheetTitle = document.getElementById('sheetTitle');
+    const sheetSubtitle = document.getElementById('sheetSubtitle');
+    const sheetScore = document.getElementById('sheetScore');
+
+    levelButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        levelButtons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+
+        previewLevel.textContent = button.dataset.level;
+        previewSummary.textContent = button.dataset.summary;
+        previewTag.textContent = button.dataset.tag;
+        previewLength.textContent = button.dataset.length;
+        previewMethod.textContent = button.dataset.method;
+        previewDefense.textContent = button.dataset.defense;
+        sheetTitle.textContent = button.dataset.title;
+        sheetSubtitle.textContent = button.dataset.subtitle;
+        sheetScore.textContent = button.dataset.score;
+      });
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
